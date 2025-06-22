@@ -6,6 +6,12 @@ vars:
   REPOSITORY: ghcr.io/adrianliechti/wingman-realtime-proxy
 
 tasks:
+  server:
+    dotenv: ['.env' ]
+    
+    cmds:
+      - go run main.go
+    
   publish:
     cmds:
       - docker buildx build . --push --platform linux/amd64,linux/arm64 --tag {{.REPOSITORY}}
