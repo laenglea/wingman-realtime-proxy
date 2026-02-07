@@ -52,6 +52,8 @@ func (s *Server) handleRealtime(w http.ResponseWriter, r *http.Request) {
 			data, _ := io.ReadAll(resp.Body)
 			log.Print(string(data))
 		}
+
+		return
 	}
 
 	defer upstream.Close()

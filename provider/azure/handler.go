@@ -24,10 +24,10 @@ func NewFromEnvironment() (*Handler, error) {
 		baseURL: os.Getenv("AZURE_OPENAI_BASE_URL"),
 
 		apiKey:     os.Getenv("AZURE_OPENAI_API_KEY"),
-		apiVersion: "2024-10-01-preview",
+		apiVersion: "v1",
 
-		defaultModel:      "gpt-4o-mini-realtime-preview",
-		defaultDeployment: "gpt-4o-mini-realtime-preview",
+		defaultModel:      "gpt-realtime",
+		defaultDeployment: "gpt-realtime",
 	}
 
 	if val := os.Getenv("AZURE_OPENAI_API_VERSION"); val != "" {
@@ -57,7 +57,7 @@ func (h *Handler) Dial(r *http.Request) (*websocket.Conn, *http.Response, error)
 	u, _ := url.Parse(h.baseURL)
 
 	u.Scheme = "wss"
-	u.Path = "/openai/realtime"
+	u.Path = "/openai/v1/realtime"
 
 	query := u.Query()
 
@@ -85,10 +85,7 @@ func (h *Handler) Dial(r *http.Request) (*websocket.Conn, *http.Response, error)
 
 	headers := http.Header{}
 
-	subprotocols := []string{
-		"realtime",
-		"openai-beta.realtime-v1",
-	}
+	subprotocols := []string{}
 
 	dialer := websocket.Dialer{
 		Subprotocols: subprotocols,
